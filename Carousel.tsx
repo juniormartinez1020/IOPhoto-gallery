@@ -1,5 +1,4 @@
 import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
-import { photos } from "./data";
 
 type Carousel = {
     title: string,
@@ -36,7 +35,6 @@ export default function Carousel({ title, photos }: Carousel) {
 
 const styles = StyleSheet.create({
     container: {
-        // padding: 50,
         marginVertical: 10
     },
     title: {

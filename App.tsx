@@ -9,10 +9,18 @@ export default function App() {
 
   return (
     <ScrollView style={styles.container}>
-
+      
       {/* header */}
-    <View style={{ height: height / 2 }}>
+    <ScrollView 
+    horizontal 
+    style={{ height: height / 2 }}
+    snapToInterval={width}
+    snapToAlignment='start'
+    decelerationRate='fast'
+    showsHorizontalScrollIndicator={false}
+    >
       <FlatList
+      style={{ width }}
       data={photos}
       numColumns={5}
       contentContainerStyle={{ gap: 2 }}
@@ -26,7 +34,19 @@ export default function App() {
       />
     } 
       />
-    </View>
+
+      <Image
+       source={photos[0].image}
+       style={{ width, height: '100%'}}
+       resizeMode='cover'
+      />
+
+      <Image
+       source={photos[10].image}
+       style={{ width, height: '100%'}}
+       resizeMode='cover'
+      />
+    </ScrollView>
 
      
 
