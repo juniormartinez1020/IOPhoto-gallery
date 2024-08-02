@@ -1,16 +1,24 @@
 import { StatusBar } from 'expo-status-bar';
-import { FlatList, Image, StyleSheet, Text, View } from 'react-native';
+import { FlatList, Image, ScrollView, StyleSheet, Text, useWindowDimensions, View } from 'react-native';
 import { photos } from './data';
+import Carousel from './Carousel';
 
 export default function App() {
-  return (
-    <View style={styles.container}>
 
+  const { height, width } = useWindowDimensions()
+
+  return (
+    <ScrollView style={styles.container}>
+
+      {/* header */}
+    <View style={{ height: height / 2 }}>
       <FlatList
       data={photos}
       numColumns={5}
       contentContainerStyle={{ gap: 2 }}
       columnWrapperStyle={{ gap: 2 }}
+      scrollEnabled={true}
+      inverted
       renderItem={({ item }) => 
       <Image 
       source={item.image} 
@@ -18,10 +26,19 @@ export default function App() {
       />
     } 
       />
-       
-
-      <StatusBar style="auto" />
     </View>
+
+     
+
+      <Carousel 
+      title='Gallery' 
+      photos={photos.slice(0,5)}
+      />  
+      <Carousel title='People' photos={photos.slice(3,6)}/> 
+      <Carousel title='Features' photos={photos.slice(6,9)}/>     
+           
+      <StatusBar style="auto" />
+    </ScrollView>
   );
 }
 
