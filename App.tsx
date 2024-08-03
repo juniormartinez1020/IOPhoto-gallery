@@ -1,11 +1,25 @@
 import { StatusBar } from 'expo-status-bar';
-import { FlatList, Image, ScrollView, StyleSheet, Text, useWindowDimensions, View } from 'react-native';
+import { FlatList, Image, NativeScrollEvent, NativeSyntheticEvent, ScrollView, StyleSheet, Text, useWindowDimensions, View } from 'react-native';
 import { photos } from './data';
 import Carousel from './Carousel';
+import { useState } from 'react';
 
 export default function App() {
 
   const { height, width } = useWindowDimensions()
+
+  const [headerCarousel, setHeaderCarousel] = useState(0)
+
+  const onHeaderCarouselScroll = (e:
+    NativeSyntheticEvent<NativeScrollEvent>
+  ) => {
+    const currPage = Math.max(0, 
+      Math.floor((e.nativeEvent.contentOffset.x + width / 2) / width))
+     
+      if (currPage !== headerCarousel) {
+        setHeaderCarousel(currPage)
+      }
+  }
 
   return (
     <ScrollView style={styles.container}>
@@ -18,6 +32,7 @@ export default function App() {
     snapToAlignment='start'
     decelerationRate='fast'
     showsHorizontalScrollIndicator={false}
+    onScroll={onHeaderCarouselScroll}
     >
       <FlatList
       style={{ width }}
@@ -48,6 +63,27 @@ export default function App() {
       />
     </ScrollView>
 
+
+      <View style={{ 
+        padding: 10, 
+        justifyContent: 'center',
+        alignItems: 'center',
+        flexDirection: 'row',
+        gap: 5
+        }}
+        >
+
+        {Array(3).fill(0).map((item, index) => 
+        <View 
+        key={index}
+        style={{
+          width: index === headerCarousel ?  10 : 8,
+          aspectRatio: 1,
+          backgroundColor: index === headerCarousel ? 'black' : 'dimgray',
+          borderRadius: 5
+        }} />)}
+
+      </View>
      
 
       <Carousel 
