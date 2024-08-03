@@ -1,8 +1,9 @@
 import { StatusBar } from 'expo-status-bar';
-import { FlatList, Image, NativeScrollEvent, NativeSyntheticEvent, ScrollView, StyleSheet, Text, useWindowDimensions, View } from 'react-native';
-import { photos } from './data';
-import Carousel from './Carousel';
+import { FlatList, Image, NativeScrollEvent, NativeSyntheticEvent, Pressable, ScrollView, StyleSheet, Text, useWindowDimensions, View } from 'react-native';
+import { photos } from '../data';
+import Carousel from '../Carousel';
 import { useState } from 'react';
+import { Link } from 'expo-router';
 
 export default function App() {
 
@@ -42,12 +43,18 @@ export default function App() {
       columnWrapperStyle={{ gap: 2 }}
       scrollEnabled={true}
       inverted
-      renderItem={({ item }) => 
-      <Image 
-      source={item.image} 
-      style={{ width: `${100 / 5}%`, aspectRatio: 1 }}
-      />
-    } 
+      renderItem={({ item }) => (
+      <Link href={`/photo/${item.id}`} asChild>
+        <Pressable
+        style={{ width: `${100 / 5}%`, aspectRatio: 1 }}
+        >
+          <Image 
+          source={item.image} 
+          style={{ width: '100%', height: '100%' }}
+          />
+        </Pressable>
+    </Link>
+  )} 
       />
 
       <Image
@@ -84,7 +91,7 @@ export default function App() {
         }} />)}
 
       </View>
-     
+
 
       <Carousel 
       title='Gallery' 
