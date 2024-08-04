@@ -14,6 +14,9 @@ export default function App() {
   const [headerCarousel, setHeaderCarousel] = useState(0)
 
   const scale = useSharedValue(1.2)
+
+  const pageScroll = useSharedValue(0)
+
   const animatedStyle = useAnimatedStyle(() => ({
     transform: [{ scale: scale.value }]
   }))
@@ -23,6 +26,13 @@ export default function App() {
      scale.value = withTiming(1, { duration: 5000 })
   }, [headerCarousel])
   
+
+  const onPageScroll = (e:
+    NativeSyntheticEvent<NativeScrollEvent>
+  ) => {
+    pageScroll.value = e.nativeEvent.contentOffset.y
+  }
+
 
   const onHeaderCarouselScroll = (e:
     NativeSyntheticEvent<NativeScrollEvent>
@@ -35,8 +45,17 @@ export default function App() {
       }
   }
 
+  const pageScrollViewAnimated = useAnimatedStyle(() => ({
+    transform: [{ translateY: pageScroll.value }]
+  }))
+
   return (
-    <ScrollView style={styles.container}>
+    <ScrollView 
+    style={[styles.container]}
+    onScroll={onPageScroll}
+    scrollToOverflowEnabled={false}
+    bounces={false}
+    >
       
       {/* header */}
     <ScrollView 
@@ -77,7 +96,7 @@ export default function App() {
         overflow: 'hidden'
         }}>
       <Animated.Image
-       source={photos[0].image}
+       source={photos[1].image}
        style={[{ 
         width: width,
         height: '100%'
