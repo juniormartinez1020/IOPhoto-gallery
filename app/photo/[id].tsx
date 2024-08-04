@@ -1,12 +1,14 @@
 import { Image, Text, View } from "react-native";
 import { photos } from "../../data";
-import { useLocalSearchParams } from "expo-router";
-import Animated, { useAnimatedStyle, useSharedValue, withTiming } from "react-native-reanimated";
+import { useLocalSearchParams, useRouter } from "expo-router";
+import Animated, { runOnJS, useAnimatedStyle, useSharedValue, withTiming } from "react-native-reanimated";
 import { useEffect } from "react";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
 
 export default function PhotoScreen() {
     const { id } = useLocalSearchParams<{ id: string }>()
+
+    const router = useRouter()
     
     const photo = photos.find((p) => p.id === Number.parseInt(id))
 
@@ -22,7 +24,13 @@ export default function PhotoScreen() {
     .onChange((e) => {
         scale.value = e.scale
     })
-    .onEnd(() => scale.value = withTiming(1))
+    .onEnd((e) => {
+        if (e.velocity < 1) {
+            runOnJS(router.back)()
+        } else {
+            scale.value = withTiming(1)
+        }
+    })
     
 
     if (!photo) {
